@@ -1,4 +1,5 @@
  import React, { useState } from 'react';
+import Forecast from './Forecast';
 
 // доступ к API сервиса погоды
 const api = {
@@ -71,29 +72,14 @@ function App() {
         </div>
         ) : ('')}
         {(typeof weather.list !='undefined') ? (
-        <div>
-          <div className='location-box'>
+          <div>
             <div className='location'>{weather.city.name}, {weather.city.country}</div>
-            <div className='date'>{format_date(new Date())}</div>
+            {Forecast(weather.list[0], format_date(new Date()))}
+            {Forecast(weather.list[1], format_date(new Date(), 1))}
+            {Forecast(weather.list[2], format_date(new Date(), 2))}
+            {Forecast(weather.list[3], format_date(new Date(), 3))}
+            {Forecast(weather.list[4], format_date(new Date(), 4))}
           </div>
-          <div className='weather-box'>
-            <div className='temp'>
-              {Math.round(weather.list[0].main.temp)}°c
-            </div>
-            <div className='weather'>{weather.list[0].weather[0].main}</div>
-          </div>
-          <div className='location-box'>
-            <div className='location'>{weather.city.name}, {weather.city.country}</div>
-            <div className='date'>{format_date(new Date(), 2)}</div>
-          </div>
-          <div className='weather-box'>
-            <div className='temp'>
-              {Math.round(weather.list[1].main.temp)}°c
-            </div>
-            <div className='weather'>{weather.list[1].weather[0].main}</div>
-          </div>
-        </div>
-        
         ) : ('')}
       </main>
     </div>
