@@ -19,7 +19,7 @@ function App() {
   // обработчик, который срабатывает когда нажата клавиша Enter
   const search = evt => {
     if (evt.key === 'Enter') {
-      fetch(`${api.base}forecast?q=${city}&units=metric&cnt=5&appid=${api.key}`) // отправляем запрос
+      fetch(`${api.base}forecast?q=${city}&units=metric&cnt=40&appid=${api.key}`) // отправляем запрос
         .then(res => res.json())  // ответ преобразуем в json
         .then(result => {         // работаем с результатом
           setWeather(result);
@@ -27,20 +27,6 @@ function App() {
           console.log(result);
         });
     }
-  }
-
-  // форматирование даты
-  const format_date = (d, next_d = 0) => {
-    let months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-    let days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-
-    d.setDate(d.getDate() + next_d);
-    let day = days[d.getDay()];
-    let date = d.getDate();
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
-
-    return `${day} ${date} ${month} ${year}`
   }
 
   // JSX разметка
@@ -61,7 +47,7 @@ function App() {
         <div>
           <div className='location-box'>
             <div className='location'>{weather.name}, {weather.sys.country}</div>
-            <div className='date'>{format_date(new Date())}</div>
+            <div className='date'>{}</div>
           </div>
           <div className='weather-box'>
             <div className='temp'>
@@ -74,11 +60,9 @@ function App() {
         {(typeof weather.list !='undefined') ? (
           <div>
             <div className='location'>{weather.city.name}, {weather.city.country}</div>
-            {Forecast(weather.list[0], format_date(new Date()))}
-            {Forecast(weather.list[1], format_date(new Date(), 1))}
-            {Forecast(weather.list[2], format_date(new Date(), 2))}
-            {Forecast(weather.list[3], format_date(new Date(), 3))}
-            {Forecast(weather.list[4], format_date(new Date(), 4))}
+            {weather.list.map(arg => (
+              <h3 key={arg.dt}>{Forecast(arg)}</h3>
+            ))}
           </div>
         ) : ('')}
       </main>
