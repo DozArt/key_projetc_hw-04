@@ -15,6 +15,7 @@ function App() {
   // действия с данными погоды
   const [weather, setWeather] = useState({});	// вся информация в массиве weather
 
+  let weather2 = weather
 
   // обработчик, который срабатывает когда нажата клавиша Enter
   const search = evt => {
@@ -27,6 +28,12 @@ function App() {
           console.log(result);
         });
     }
+  }
+
+  
+  const today = () => {
+    weather2 = weather.list.slice(0,9);
+    console.log(weather2);
   }
 
   // JSX разметка
@@ -43,23 +50,10 @@ function App() {
             onKeyUp={search}	// следим за нажатием кнопки
           />
         </div>
-        {(typeof weather.main != 'undefined') ? (
-        <div>
-          <div className='location-box'>
-            <div className='location'>{weather.name}, {weather.sys.country}</div>
-            <div className='date'>{}</div>
-          </div>
-          <div className='weather-box'>
-            <div className='temp'>
-              {Math.round(weather.main.temp)}°c
-            </div>
-            <div className='weather'>{weather.weather[0].main}</div>
-          </div>
-        </div>
-        ) : ('')}
         {(typeof weather.list !='undefined') ? (
           <div>
             <div className='location'>{weather.city.name}, {weather.city.country}</div>
+            <button onClick={today}>Прогноз на 5 дней</button>
             {weather.list.map(arg => (
               <h3 key={arg.dt}>{Forecast(arg)}</h3>
             ))}
