@@ -1,4 +1,4 @@
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import Forecast from './Forecast';
 
 // доступ к API сервиса погоды
@@ -15,7 +15,7 @@ function App() {
   // действия с данными погоды
   const [weather, setWeather] = useState({});	// вся информация в массиве weather
 
-  let weather2 = weather
+  const [isOneDayMode, setOneDayMode] = useState(true);
 
   // обработчик, который срабатывает когда нажата клавиша Enter
   const search = evt => {
@@ -28,12 +28,6 @@ function App() {
           console.log(result);
         });
     }
-  }
-
-  
-  const today = () => {
-    weather2 = weather.list.slice(0,9);
-    console.log(weather2);
   }
 
   // JSX разметка
@@ -50,15 +44,29 @@ function App() {
             onKeyUp={search}	// следим за нажатием кнопки
           />
         </div>
-        {(typeof weather.list !='undefined') ? (
+        <button onClick={() => setOneDayMode(!isOneDayMode)}>
+          {isOneDayMode ? 'Показать на 5 дней' : 'Показать на 1 день'}
+        </button>
+        {isOneDayMode ? (
+        <div>
+          <h2>Прогноз на один день</h2>
+          {/* Ваш код для отображения погоды на один день */}
+        </div>
+      ) : (
+        <div>
+          <h2>Прогноз на 5 дней</h2>
+          {(typeof weather.list != 'undefined') ? (
+          
           <div>
             <div className='location'>{weather.city.name}, {weather.city.country}</div>
-            <button onClick={today}>Прогноз на 5 дней</button>
             {weather.list.map(arg => (
               <h3 key={arg.dt}>{Forecast(arg)}</h3>
             ))}
           </div>
         ) : ('')}
+        </div>
+      )}
+        
       </main>
     </div>
   );
