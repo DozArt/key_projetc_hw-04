@@ -1,23 +1,23 @@
 
   // форматирование даты
-  const format_date = (d, next_d = 0) => {
+  const format_date = (d) => {
     let months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     let days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
-    d.setDate(d.getDate() + next_d);
-    let day = days[d.getDay()];
-    let date = d.getDate();
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
+    let day = days[d.getUTCDay()];
+    let date = d.getUTCDate();
+    let month = months[d.getUTCMonth()];
+    let year = d.getUTCFullYear();
+    let hour = d.getUTCHours()
 
-    return `${day} ${date} ${month} ${year}`
+    return `${day} ${date} ${month} ${year} ${hour}`
   }
 
-function Forecast(weather){
+function Forecast(weather, timezone){
     return (
     <div>
         <div className='location-box'>
-            <a href ="#1" className='date'>{format_date(new Date(weather.dt * 1000))}</a>
+            <a href ="#1" className='date'>{format_date(new Date((weather.dt + timezone) * 1000))}</a>
         </div>
         <div className='weather-box'>
             <div className='temp'>

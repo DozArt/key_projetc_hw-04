@@ -3,7 +3,7 @@ import Forecast from './Forecast';
 
 // доступ к API сервиса погоды
 const api = {
-  key: 'c7616da4b68205c2f3ae73df2c31d177',
+  key: '7d9d632bc6916a92fc14f219a258a5ae',
   base: 'http://api.openweathermap.org/data/2.5/'
 }
 
@@ -25,7 +25,7 @@ function App() {
         .then(result => {         // работаем с результатом
           setWeather(result);
           setCity('');			  // очищаем переменную city
-          console.log(result);
+          console.log(result, new Date(0));
         });
     }
   }
@@ -34,6 +34,7 @@ function App() {
   return (
     <div className={(typeof weather.main != 'undefined') ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
       <main>
+
         <div className='search-box'>
           <input
             type='text'
@@ -44,29 +45,39 @@ function App() {
             onKeyUp={search}	// следим за нажатием кнопки
           />
         </div>
+
+
+
+
         <button onClick={() => setOneDayMode(!isOneDayMode)}>
           {isOneDayMode ? 'Показать на 5 дней' : 'Показать на 1 день'}
         </button>
-        {isOneDayMode ? (
+
+
         <div>
-          <h2>Прогноз на один день</h2>
-          {/* Ваш код для отображения погоды на один день */}
-        </div>
-      ) : (
-        <div>
-          <h2>Прогноз на 5 дней</h2>
+
           {(typeof weather.list != 'undefined') ? (
-          
-          <div>
-            <div className='location'>{weather.city.name}, {weather.city.country}</div>
-            {weather.list.map(arg => (
-              <h3 key={arg.dt}>{Forecast(arg)}</h3>
-            ))}
-          </div>
-        ) : ('')}
+            <div>
+              <div className='location'>{weather.city.name}, {weather.city.country}</div>
+              {isOneDayMode ? (
+                <div>
+                  <h2>Прогноз на один день</h2>
+                  {weather.list.map(arg => (
+                    <h3 key={arg.dt}>{Forecast(arg, weather.city.timezone)}</h3>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <h2>Прогноз на 5 дней</h2>
+                  {weather.list.map(arg => (
+                    <h3 key={arg.dt}>{Forecast(arg, weather.city.timezone)}</h3>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : ('')}
         </div>
-      )}
-        
+
       </main>
     </div>
   );

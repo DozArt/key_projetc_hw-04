@@ -1,10 +1,9 @@
 
   // форматирование даты
-  const format_date = (d, next_d = 0) => {
+  const format_date = (d) => {
     let months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     let days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
-    d.setDate(d.getDate() + next_d);
     let day = days[d.getDay()];
     let date = d.getDate();
     let month = months[d.getMonth()];
@@ -17,7 +16,7 @@ function Forecast(weather){
     return (
     <div>
         <div className='location-box'>
-            <a href ="#1" className='date'>{format_date(new Date(weather.dt * 1000))}</a>
+            <a href ="#1" className='date'>{format_date(new Date())}</a>
         </div>
         <div className='weather-box'>
             <div className='temp'>
