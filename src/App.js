@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Forecast from './Forecast';
+import WeatherToday from './WeatherToday';
+import WeatherForecast from './WeatherForecast';
 
 // доступ к API сервиса погоды
 const api = {
@@ -13,26 +14,36 @@ function App() {
   const [city, setCity] = useState('');
 
   // действия с данными погоды
-  const [weather, setWeather] = useState({});	// вся информация в массиве weather
+  const [weather_forecast, setWeatherForecast] = useState({});	// вся информация в массиве weather
+  const [weather_today, setWeatherToday] = useState({});	// вся информация в массиве weather
 
   const [isOneDayMode, setOneDayMode] = useState(true);
 
   // обработчик, который срабатывает когда нажата клавиша Enter
-  const search = evt => {
+  const search_forecast = evt => {
     if (evt.key === 'Enter') {
-      fetch(`${api.base}forecast?q=${city}&units=metric&cnt=40&appid=${api.key}`) // отправляем запрос
+      fetch(`${api.base}forecast?q=${city}&units=metric&cnt=40&appid=${api.key}`) // отправляем запрос на 5 дней
         .then(res => res.json())  // ответ преобразуем в json
         .then(result => {         // работаем с результатом
-          setWeather(result);
-          setCity('');			  // очищаем переменную city
-          console.log(result, new Date(0));
+          setWeatherForecast(result);
+          console.log(result);
         });
+
+      fetch(`${api.base}weather?q=${city}&units=metric&appid=${api.key}`) // отправляем запрос на день
+        .then(res => res.json())  // ответ преобразуем в json
+        .then(result => {         // работаем с результатом
+          setWeatherToday(result);
+          setCity('');			  // очищаем переменную city
+          console.log(result);
+        });
+      
     }
   }
 
+
   // JSX разметка
   return (
-    <div className={(typeof weather.main != 'undefined') ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
+    <div className={(typeof weather_forecast.main != 'undefined') ? ((weather_forecast.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
       <main>
 
         <div className='search-box'>
@@ -42,35 +53,29 @@ function App() {
             placeholder='Поиск...'
             onChange={e => setCity(e.target.value)}
             value={city}
-            onKeyUp={search}	// следим за нажатием кнопки
+            onKeyUp={search_forecast}	// следим за нажатием кнопки
           />
         </div>
 
-
-
-
-        <button onClick={() => setOneDayMode(!isOneDayMode)}>
-          {isOneDayMode ? 'Показать на 5 дней' : 'Показать на 1 день'}
-        </button>
+        
 
 
         <div>
 
-          {(typeof weather.list != 'undefined') ? (
+          {(typeof weather_forecast.list != 'undefined') ? (
             <div>
-              <div className='location'>{weather.city.name}, {weather.city.country}</div>
+              <button onClick={() => setOneDayMode(!isOneDayMode)}>
+                {isOneDayMode ? 'Показать на 5 дней' : 'Показать на 1 день'}
+              </button>
+              <div className='location'>{weather_forecast.city.name}, {weather_forecast.city.country}</div>
+              
               {isOneDayMode ? (
-                <div>
-                  <h2>Прогноз на один день</h2>
-                  {weather.list.map(arg => (
-                    <h3 key={arg.dt}>{Forecast(arg, weather.city.timezone)}</h3>
-                  ))}
-                </div>
+                WeatherToday(weather_today)
               ) : (
                 <div>
                   <h2>Прогноз на 5 дней</h2>
-                  {weather.list.map(arg => (
-                    <h3 key={arg.dt}>{Forecast(arg, weather.city.timezone)}</h3>
+                  {weather_forecast.list.map(arg => (
+                    <h3 key={arg.dt}>{WeatherForecast(arg, weather_forecast.city.timezone)}</h3>
                   ))}
                 </div>
               )}
