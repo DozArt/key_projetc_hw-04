@@ -20,13 +20,13 @@ function App() {
   const [isOneDayMode, setOneDayMode] = useState(true);
 
   // обработчик, который срабатывает когда нажата клавиша Enter
-  const search_forecast = evt => {
+  const search = evt => {
     if (evt.key === 'Enter') {
-      fetch(`${api.base}forecast?q=${city}&units=metric&cnt=40&appid=${api.key}`) // отправляем запрос на 5 дней
+      fetch(`${api.base}forecast?q=${city}&units=metric&appid=${api.key}`) // отправляем запрос на 5 дней
         .then(res => res.json())  // ответ преобразуем в json
         .then(result => {         // работаем с результатом
           setWeatherForecast(result);
-          console.log(result);
+          console.log('прогноз на 5 дней', result);
         });
 
       fetch(`${api.base}weather?q=${city}&units=metric&appid=${api.key}`) // отправляем запрос на день
@@ -34,7 +34,7 @@ function App() {
         .then(result => {         // работаем с результатом
           setWeatherToday(result);
           setCity('');			  // очищаем переменную city
-          console.log(result);
+          console.log('прогноз на сейчас', result);
         });
       
     }
@@ -49,33 +49,41 @@ function App() {
         <div className='search-box'>
           <input
             type='text'
+            list="sity"
             className='search-bar'
             placeholder='Поиск...'
             onChange={e => setCity(e.target.value)}
             value={city}
-            onKeyUp={search_forecast}	// следим за нажатием кнопки
+            onKeyUp={search}	// следим за нажатием кнопки
           />
         </div>
 
-        
-
+        <datalist id = "sity">
+					 <option value = "Tula" label = "Тула" />
+					 <option value = "Orel" label = "Орел" />
+					 <option value = "Omsk" label = "Омск" />
+					 <option value = "kaluga" label = "Калуга" />
+					 <option value = "Moskva" label = "Москва" />
+				</datalist>	
 
         <div>
 
           {(typeof weather_forecast.list != 'undefined') ? (
             <div>
+              <div className='location'>{weather_forecast.city.name}, {weather_forecast.city.country}</div>
               <button onClick={() => setOneDayMode(!isOneDayMode)}>
                 {isOneDayMode ? 'Показать на 5 дней' : 'Показать на 1 день'}
               </button>
-              <div className='location'>{weather_forecast.city.name}, {weather_forecast.city.country}</div>
-              
               {isOneDayMode ? (
-                WeatherToday(weather_today)
+                <div>
+                  <h2>Прогноз на 1 день</h2>
+                  {WeatherToday(weather_today)}
+                </div>
               ) : (
                 <div>
                   <h2>Прогноз на 5 дней</h2>
                   {weather_forecast.list.map(arg => (
-                    <h3 key={arg.dt}>{WeatherForecast(arg, weather_forecast.city.timezone)}</h3>
+                    <div key={arg.dt}>{WeatherForecast(arg, weather_forecast.city.timezone)}</div>
                   ))}
                 </div>
               )}

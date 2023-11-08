@@ -5,7 +5,7 @@ function WeatherForecast(weather, timezone){
     return (
     <div>
         <div className='location-box'>
-            <a href ="#1" className='date'>{format_date(new Date((weather.dt + timezone) * 1000))}</a>
+            {format_date(new Date((weather.dt + timezone) * 1000))}
         </div>
         <div className='weather-box'>
             <div className='temp'>
