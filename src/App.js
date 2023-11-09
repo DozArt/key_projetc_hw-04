@@ -26,6 +26,7 @@ function App() {
         .then(res => res.json())  // ответ преобразуем в json
         .then(result => {         // работаем с результатом
           setWeatherForecast(result);
+          result.list = result.list.filter(reading => (reading.dt - (43200 - result.city.timezone)) % 86400 === 0 ) // фильтрация - 12 часов каждого дня по месному времени
           console.log('прогноз на 5 дней', result);
         });
 
