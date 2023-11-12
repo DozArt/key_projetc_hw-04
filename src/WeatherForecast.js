@@ -1,7 +1,10 @@
 import format_date from "./format_date";
+import './css/owfont-regular.css'
 
 
 function WeatherForecast(weather, timezone){
+    const imgURL = "owf owf-"+ weather.weather[0].id +" owf-5x icon-style"
+
     return (
     <div>
         <div className='location-box'>
@@ -11,7 +14,7 @@ function WeatherForecast(weather, timezone){
             <div className='temp'>
                 {Math.round(weather.main.temp)}°c
             </div>
-            <div className='weather'>{weather.weather[0].main}</div>
+            <i className={imgURL}></i>
         </div>
     </div>
     );
