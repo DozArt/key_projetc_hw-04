@@ -14,7 +14,7 @@ function WeatherForecast(weather, timezone){
             <div className='temp'>
                 {Math.round(weather.main.temp)}°c
             </div>
-            <i className={imgURL}></i>
+            <i className={imgURL} title={weather.weather[0].main}></i>
         </div>
     </div>
     );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import WeatherToday from './WeatherToday';
 import WeatherForecast from './WeatherForecast';
+import './App.css'
 
 // доступ к API сервиса погоды
 const api = {
@@ -67,11 +68,11 @@ function App() {
 					 <option value = "Moskva" label = "Москва" />
 				</datalist>	
 
-        <div>
+
 
           {(typeof weather_forecast.list != 'undefined') ? (
             <div>
-              <div className='location'>{weather_forecast.city.name}, {weather_forecast.city.country}</div>
+              <div className='location'>{weather_forecast.city.name}</div>
               <button onClick={() => setOneDayMode(!isOneDayMode)}>
                 {isOneDayMode ? 'Показать на 5 дней' : 'Показать на 1 день'}
               </button>
@@ -90,7 +91,7 @@ function App() {
               )}
             </div>
           ) : ('')}
-        </div>
+
 
       </main>
     </div>

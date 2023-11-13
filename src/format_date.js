@@ -8,9 +8,9 @@
     let date = d.getUTCDate();
     let month = months[d.getUTCMonth()];
     let year = d.getUTCFullYear();
-    let hour = d.getUTCHours()
+    //let hour = d.getUTCHours()
 
-    return `${day} ${date} ${month} ${year} ${hour}`
+    return `${day} ${date} ${month} ${year}`
   }
 
 export default format_date;
