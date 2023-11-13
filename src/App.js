@@ -74,7 +74,7 @@ function App() {
             <div>
               <div className='location'>{weather_forecast.city.name}</div>
               <button onClick={() => setOneDayMode(!isOneDayMode)}>
-                {isOneDayMode ? 'Показать на 5 дней' : 'Показать на 1 день'}
+                {isOneDayMode ? '| Показать на 5 дней |' : '| Показать на 1 день |'}
               </button>
               {isOneDayMode ? (
                 <div>
@@ -84,9 +84,11 @@ function App() {
               ) : (
                 <div>
                   <h2>Прогноз на 5 дней</h2>
-                  {weather_forecast.list.map(arg => (
-                    <div key={arg.dt}>{WeatherForecast(arg, weather_forecast.city.timezone)}</div>
-                  ))}
+                  <div className='weathers'> 
+                    {weather_forecast.list.map(arg => (
+                      WeatherForecast(arg, weather_forecast.city.timezone)
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

@@ -1,16 +1,46 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.weathers{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  flex-direction: row;
+  text-align: center;
+}
+
+.weather-box {
+  width: 200px;
+  height: 600px;
+  text-align: center;
+  background-color: rgb(108, 108, 108);
+  margin: 10px;
+  padding-top: 10px;
+}
+
+.weather-box p,.temp{
+  font-size: 2em;
+}
+
 .icon-style {
   font-size: 10em;
+  color: rgb(47, 47, 47);
 }
 
 .search-bar {
   font-size: 20px;
   margin: 10px;
-
+  
 }
 
 .search-box {
   background-color: rgb(167, 167, 167);
-
+  flex: 1;
 } 
 
 .location {
@@ -21,4 +51,14 @@
 
 button{
   font-size: 20px;
+  border: 0px;
+  background-color: rgb(78, 78, 78);
+}
+
+.temp {
+
+}
+
+h2 {
+  text-align: center;
 }
