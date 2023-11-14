@@ -10,7 +10,7 @@ function WeatherToday(weather) {
 				
 			</div>
 			<div className='weather-box'>
-				<div className='date'>{format_date(new Date((weather.dt + weather.timezone) * 1000))}</div>
+				<div className='date-box'>{format_date(new Date((weather.dt + weather.timezone) * 1000))}</div>
 				<i className={imgURL} title={weather.weather[0].description}></i>
 				<div className='temp'>
 					{Math.round(weather.main.temp)}°c

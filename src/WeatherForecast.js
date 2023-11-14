@@ -7,7 +7,7 @@ function WeatherForecast(weather, timezone){
 
     return (
         <div key={weather.dt} className='weather-box'>
-            <p>{format_date(new Date((weather.dt + timezone) * 1000))}</p>
+            <div className='date-box'>{format_date(new Date((weather.dt + timezone) * 1000))}</div>
             <div>
                 <i className={imgURL} title={weather.weather[0].description}></i>
             </div>

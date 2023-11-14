@@ -10,7 +10,12 @@
     //let year = d.getUTCFullYear();
     //let hour = d.getUTCHours()
 
-    return `${day} ${date}`
+    return(
+      <>
+        <div className="day">{day}</div>
+        <div className="date">{date}</div>
+      </>
+    )
   }
 
 export default format_date;

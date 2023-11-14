@@ -27,7 +27,7 @@ function App() {
         .then(res => res.json())  // ответ преобразуем в json
         .then(result => {         // работаем с результатом
           setWeatherForecast(result);
-          result.list = result.list.filter(reading => (reading.dt - (43200 - result.city.timezone)) % 86400 === 0 ) // фильтрация - 12 часов каждого дня по месному времени
+          result.list = result.list.filter(reading => (reading.dt - (43200 - result.city.timezone)) % 86400 === 0) // фильтрация - 12 часов каждого дня по месному времени
           console.log('прогноз на 5 дней', result);
         });
 
@@ -38,65 +38,60 @@ function App() {
           setCity('');			  // очищаем переменную city
           console.log('прогноз на сейчас', result);
         });
-      
+
     }
   }
 
 
   // JSX разметка
   return (
-    <div className={(typeof weather_forecast.main != 'undefined') ? ((weather_forecast.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
-      <main>
+    <>
+      <div className='search-box'>
+        <input
+          type='text'
+          list="sity"
+          className='search-bar'
+          placeholder='Поиск...'
+          onChange={e => setCity(e.target.value)}
+          value={city}
+          onKeyUp={search}	// следим за нажатием кнопки
+        />
+      </div>
 
-        <div className='search-box'>
-          <input
-            type='text'
-            list="sity"
-            className='search-bar'
-            placeholder='Поиск...'
-            onChange={e => setCity(e.target.value)}
-            value={city}
-            onKeyUp={search}	// следим за нажатием кнопки
-          />
-        </div>
-
-        <datalist id = "sity">
-					 <option value = "Tula" label = "Тула" />
-					 <option value = "Orel" label = "Орел" />
-					 <option value = "Omsk" label = "Омск" />
-					 <option value = "kaluga" label = "Калуга" />
-					 <option value = "Moskva" label = "Москва" />
-				</datalist>	
+      <datalist id="sity">
+        <option value="Tula" label="Тула" />
+        <option value="Orel" label="Орел" />
+        <option value="Omsk" label="Омск" />
+        <option value="kaluga" label="Калуга" />
+        <option value="Moskva" label="Москва" />
+      </datalist>
 
 
 
-          {(typeof weather_forecast.list != 'undefined') ? (
+      {(typeof weather_forecast.list != 'undefined') ? (
+        <div className='location-box'>
+          <div className='location'>{weather_forecast.city.name}</div>
+          <button onClick={() => setOneDayMode(!isOneDayMode)}>
+            {isOneDayMode ? '| Показать на 5 дней |' : '| Показать на 1 день |'}
+          </button>
+          {isOneDayMode ? (
             <div>
-              <div className='location'>{weather_forecast.city.name}</div>
-              <button onClick={() => setOneDayMode(!isOneDayMode)}>
-                {isOneDayMode ? '| Показать на 5 дней |' : '| Показать на 1 день |'}
-              </button>
-              {isOneDayMode ? (
-                <div>
-                  <h2>Прогноз на 1 день</h2>
-                  {WeatherToday(weather_today)}
-                </div>
-              ) : (
-                <div>
-                  <h2>Прогноз на 5 дней</h2>
-                  <div className='weathers'> 
-                    {weather_forecast.list.map(arg => (
-                      WeatherForecast(arg, weather_forecast.city.timezone)
-                    ))}
-                  </div>
-                </div>
-              )}
+              <h2>Прогноз на 1 день</h2>
+              {WeatherToday(weather_today)}
             </div>
-          ) : ('')}
-
-
-      </main>
-    </div>
+          ) : (
+            <div>
+              <h2>Прогноз на 5 дней</h2>
+              <div className='weathers'>
+                {weather_forecast.list.map(arg => (
+                  WeatherForecast(arg, weather_forecast.city.timezone)
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : ('')}
+    </>
   );
 }
 
